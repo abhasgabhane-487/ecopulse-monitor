@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoPulse | Enterprise Environmental, Waste & Clean Energy Intelligence</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Custom Enterprise Design System Stylesheet -->
+  <link rel="stylesheet" href="/static/style.css" onerror="this.onerror=null;this.href='./style.css';">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Immediate Demo / Crawler / Route Detection -->
+  <script>
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      var path = window.location.pathname.toLowerCase();
+      var isDirect = params.get('demo') === 'true' || 
+                     params.get('mode') === 'demo' ||
+                     path.indexOf('environmental') !== -1 || 
+                     path.indexOf('waste') !== -1 || 
+                     path.indexOf('renewable') !== -1 || 
+                     path.indexOf('energy') !== -1 ||
+                     localStorage.getItem('ecopulse_skip_login') === 'true';
+      if (isDirect) {
+        document.documentElement.classList.add('demo-direct-mode');
+      }
+    })();
+  </script>
+  <style>
+    .demo-direct-mode #loginScreen,
+    .demo-direct-mode #welcomeScreen {
+      display: none !important;
+    }
+    .demo-direct-mode #appContainer {
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
+  </style>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-enterprise-grid min-h-screen relative overflow-x-hidden transition-colors duration-300">
+
+  <!-- ======================================================== -->
+  <!-- 1. ENTERPRISE LOGIN PORTAL (Initial Screen)              -->
+  <!-- ======================================================== -->
+  <section id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dots-pattern transition-opacity duration-500" style="background-color: var(--bg-app);">
+    <!-- Ambient Floating Light Cones -->
+    <div class="absolute -top-32 -left-32 w-[30rem] h-[30rem] bg-emerald-500/15 rounded-full blur-[100px] glow-orb-primary pointer-events-none"></div>
+    <div class="absolute -bottom-32 -right-32 w-[32rem] h-[32rem] bg-cyan-500/15 rounded-full blur-[120px] glow-orb-secondary pointer-events-none"></div>
+
+    <!-- Login Card Container -->
+    <div class="relative w-full max-w-md glass-panel-elevated rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+      
+      <!-- Brand Logo & Header -->
+      <div class="text-center space-y-2">
+        <div class="inline-flex p-3 rounded-2xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-cyan-400 shadow-xl shadow-emerald-500/25">
+          <i data-lucide="globe-2" class="w-8 h-8 text-white"></i>
+        </div>
+        <div>
+          <div class="flex items-center justify-center space-x-2">
+            <h1 class="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-400 bg-clip-text text-transparent">EcoPulse</h1>
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 font-mono font-bold tracking-wider">v2.5 PRO</span>
+          </div>
+          <p class="text-xs text-themed-muted mt-1">Enterprise Environmental, Waste & Clean Energy Intelligence</p>
+        </div>
+      </div>
+
+      <!-- Quick Operator Access Profiles -->
+      <div class="subpanel-card p-3 rounded-2xl space-y-2">
+        <div class="flex items-center justify-between text-[10px] text-themed-muted font-bold tracking-wider uppercase">
+          <span>Quick Operator Access</span>
+          <span class="text-themed-accent font-mono">1-Click</span>
+        </div>
+        <div class="grid grid-cols-2 gap-1.5">
+          <button id="quickFillBtn" type="button" class="py-1.5 px-2.5 rounded-xl glass-panel text-[11px] font-semibold text-emerald-500 border border-emerald-500/30 flex items-center justify-center space-x-1 hover:scale-[1.02] transition-all">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+            <span class="truncate">Abhas (Lead)</span>
+          </button>
+          <button id="quickFillTechBtn" type="button" class="py-1.5 px-2.5 rounded-xl glass-panel text-[11px] font-semibold text-cyan-500 border border-cyan-500/30 flex items-center justify-center space-x-1 hover:scale-[1.02] transition-all">
+            <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+            <span class="truncate">Microgrid Eng</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-themed-secondary mb-1">Operator Name</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-themed-muted pointer-events-none">
+              <i data-lucide="user" class="w-4 h-4"></i>
+            </span>
+            <input id="loginName" type="text" required value="Abhas Gabhane" placeholder="Operator Name" class="w-full subpanel-card rounded-xl pl-10 pr-3.5 py-2.5 text-xs text-themed-primary focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all font-medium">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-themed-secondary mb-1">Terminal Email / ID</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-themed-muted pointer-events-none">
+              <i data-lucide="mail" class="w-4 h-4"></i>
+            </span>
+            <input id="loginEmail" type="email" required value="abhas.gabhane@ecopulse.io" placeholder="operator@ecopulse.io" class="w-full subpanel-card rounded-xl pl-10 pr-3.5 py-2.5 text-xs text-themed-primary focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all font-mono">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-themed-secondary mb-1">Operational Authority Role</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-themed-muted pointer-events-none">
+              <i data-lucide="award" class="w-4 h-4 text-emerald-500"></i>
+            </span>
+            <select id="loginRole" class="w-full subpanel-card rounded-xl pl-10 pr-3.5 py-2.5 text-xs text-themed-primary focus:outline-none focus:ring-2 focus:ring-emerald-500/50 cursor-pointer font-medium">
+              <option value="Chief Sustainability Officer">Chief Sustainability Officer</option>
+              <option value="Environmental Systems Engineer">Environmental Systems Engineer</option>
+              <option value="Facility Microgrid Operator">Facility Microgrid Operator</option>
+              <option value="Municipal Waste Inspector">Municipal Waste Inspector</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-themed-secondary mb-1">Passcode / Key (Any input or Demo)</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-themed-muted pointer-events-none">
+              <i data-lucide="key" class="w-4 h-4"></i>
+            </span>
+            <input id="loginPassword" type="password" placeholder="•••••••• (or click Demo below)" class="w-full subpanel-card rounded-xl pl-10 pr-3.5 py-2.5 text-xs text-themed-primary focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all font-mono">
+          </div>
+        </div>
+
+        <button type="submit" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 text-xs sm:text-sm font-bold shadow-lg shadow-emerald-500/25 flex items-center justify-center space-x-2 transition-all transform active:scale-[0.98]">
+          <span>Launch Telemetry Console</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+
+        <!-- Instant Public Demo Link (No Auth / Crawler Access) -->
+        <a href="?demo=true" id="directDemoBtn" class="w-full py-2.5 px-4 rounded-xl border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 dark:text-emerald-400 text-xs font-bold flex items-center justify-center space-x-2 transition-all shadow-sm">
+          <i data-lucide="play-circle" class="w-4 h-4"></i>
+          <span>Explore Public Demo (No Login Required)</span>
+        </a>
+      </form>
+
+      <div class="pt-3 border-t border-[var(--border-card)] text-center flex items-center justify-center space-x-2 text-[10px] text-themed-muted font-mono">
+        <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-500"></i>
+        <span>Public & Crawler Friendly • Robots Allowed</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 2. HIGH-TECH WELCOME & BOOT SEQUENCE SPLASH SCREEN       -->
+  <!-- ======================================================== -->
+  <section id="welcomeScreen" class="fixed inset-0 z-50 hidden flex flex-col items-center justify-center p-6 bg-dots-pattern transition-opacity duration-700" style="background-color: var(--bg-app);">
+    <div class="relative flex items-center justify-center mb-8">
+      <div class="absolute w-52 h-52 rounded-full border border-emerald-500/30 radar-sweep"></div>
+      <div class="absolute w-44 h-44 rounded-full border border-dashed border-cyan-500/40 animate-spin" style="animation-duration: 15s;"></div>
+      <div class="absolute w-60 h-60 rounded-full border border-[var(--border-card)]"></div>
+      
+      <div class="relative w-24 h-24 rounded-3xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-cyan-400 flex items-center justify-center shadow-2xl shadow-emerald-500/40">
+        <i data-lucide="sparkles" class="w-12 h-12 text-white animate-pulse"></i>
+      </div>
+    </div>
+
+    <div class="text-center space-y-2 max-w-md mx-auto">
+      <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-500 font-bold font-mono">
+        <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+        <span>AUTHENTICATION VERIFIED</span>
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-themed-primary">
+        Welcome, <span id="welcomeUserName" class="bg-gradient-to-r from-emerald-500 to-cyan-500 bg-clip-text text-transparent">Operator</span>
+      </h2>
+      <p id="welcomeUserRole" class="text-xs sm:text-sm text-themed-muted font-semibold">Chief Sustainability Officer</p>
+    </div>
+
+    <!-- Diagnostic Step Feeds -->
+    <div class="w-full max-w-sm mt-8 space-y-2">
+      <div id="diagStep1" class="flex items-center justify-between p-3 rounded-2xl glass-panel text-xs opacity-40 transition-all duration-300">
+        <span class="flex items-center space-x-2 text-themed-secondary font-medium">
+          <i data-lucide="wind" class="w-4 h-4 text-emerald-500"></i>
+          <span>Calibrating Environmental Air Probes...</span>
+        </span>
+        <span class="status-pill text-[10px] text-themed-muted font-mono font-bold">STANDBY</span>
+      </div>
+
+      <div id="diagStep2" class="flex items-center justify-between p-3 rounded-2xl glass-panel text-xs opacity-40 transition-all duration-300">
+        <span class="flex items-center space-x-2 text-themed-secondary font-medium">
+          <i data-lucide="trash-2" class="w-4 h-4 text-amber-500"></i>
+          <span>Syncing Smart Waste Ultrasonic Bins...</span>
+        </span>
+        <span class="status-pill text-[10px] text-themed-muted font-mono font-bold">QUEUED</span>
+      </div>
+
+      <div id="diagStep3" class="flex items-center justify-between p-3 rounded-2xl glass-panel text-xs opacity-40 transition-all duration-300">
+        <span class="flex items-center space-x-2 text-themed-secondary font-medium">
+          <i data-lucide="sun-medium" class="w-4 h-4 text-yellow-500"></i>
+          <span>Linking Solar PV & BESS Microgrid...</span>
+        </span>
+        <span class="status-pill text-[10px] text-themed-muted font-mono font-bold">QUEUED</span>
+      </div>
+
+      <div id="diagStep4" class="flex items-center justify-between p-3 rounded-2xl glass-panel text-xs opacity-40 transition-all duration-300">
+        <span class="flex items-center space-x-2 text-themed-secondary font-medium">
+          <i data-lucide="activity" class="w-4 h-4 text-cyan-500"></i>
+          <span>Computing Holistic Eco-Score...</span>
+        </span>
+        <span class="status-pill text-[10px] text-themed-muted font-mono font-bold">QUEUED</span>
+      </div>
+    </div>
+
+    <!-- Progress Gauge -->
+    <div class="w-full max-w-sm mt-6">
+      <div class="flex justify-between text-[11px] text-themed-muted mb-1.5 font-mono">
+        <span>Initializing Real-Time Stream</span>
+        <span id="welcomeProgressPct">0%</span>
+      </div>
+      <div class="w-full subpanel-card h-2 rounded-full overflow-hidden">
+        <div id="welcomeProgressBar" class="h-full bg-gradient-to-r from-emerald-500 to-cyan-400 transition-all duration-300" style="width: 0%"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 3. MAIN APPLICATION DASHBOARD                            -->
+  <!-- ======================================================== -->
+  <div id="appContainer" class="opacity-0 pointer-events-none transition-opacity duration-700">
+
+    <!-- Top Sticky Header Bar -->
+    <header class="border-b border-[var(--nav-border)] sticky top-0 z-40 backdrop-blur-2xl transition-colors duration-300" style="background-color: var(--nav-bg);">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        
+        <!-- Left: Logo & Live Connection Beacon -->
+        <div class="flex items-center space-x-3.5">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+            <i data-lucide="globe-2" class="w-6 h-6 text-white"></i>
+          </div>
+          <div>
+            <div class="flex items-center space-x-2">
+              <h1 class="text-lg font-extrabold tracking-tight bg-gradient-to-r from-emerald-500 to-cyan-500 bg-clip-text text-transparent">EcoPulse</h1>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/25 font-mono font-bold">ONLINE</span>
+            </div>
+            <div class="flex items-center space-x-2 text-xs text-themed-muted">
+              <span id="connectionBadge" class="relative flex items-center space-x-1.5">
+                <span id="statusDot" class="w-2 h-2 rounded-full bg-emerald-500 pulse-beacon relative"></span>
+                <span id="statusText" class="text-emerald-500 font-semibold">WebSocket Live</span>
+              </span>
+              <span>•</span>
+              <span id="lastUpdated" class="font-mono text-[11px]">Syncing...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Center / Right Controls & Quick Actions -->
+        <div class="flex items-center space-x-2 sm:space-x-2.5">
+          
+          <!-- Radial Eco-Score Gauge -->
+          <div class="hidden md:flex items-center space-x-3 px-3.5 py-1.5 glass-panel rounded-2xl cursor-pointer" title="Holistic Sustainability Score">
+            <div class="relative w-8 h-8 flex items-center justify-center">
+              <svg class="w-8 h-8 -rotate-90" viewBox="0 0 36 36">
+                <path class="text-slate-300 dark:text-slate-800" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                <path id="ecoScoreRadial" class="text-emerald-500 transition-all duration-700" stroke-width="3.5" stroke-dasharray="88, 100" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              </svg>
+              <span id="ecoScoreVal" class="absolute text-[11px] font-extrabold font-mono text-emerald-500">88</span>
+            </div>
+            <div class="text-left">
+              <div class="text-[9px] font-bold text-themed-muted uppercase tracking-wider">Facility Score</div>
+              <div class="text-[11px] font-bold text-themed-primary">Optimal Eco</div>
+            </div>
+          </div>
+
+          <!-- Environment Preset Selector -->
+          <select id="presetSelect" class="subpanel-card text-xs font-semibold rounded-xl px-3 py-1.5 text-themed-primary focus:outline-none focus:ring-2 focus:ring-emerald-500/50 cursor-pointer">
+            <option value="Standard Office">📍 Standard Office</option>
+            <option value="Server Room">🖥️ Server Room</option>
+            <option value="Greenhouse">🌱 Smart Greenhouse</option>
+            <option value="Industrial Factory">🏭 Industrial Factory</option>
+            <option value="Urban City">🏙️ Urban City</option>
+          </select>
+
+          <!-- NEW: Dedicated Website Settings Button (Opens Multi-Customization Menu) -->
+          <button id="openSettingsBtn" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-themed-primary border border-[var(--border-card)] transition-all shadow-sm">
+            <i data-lucide="settings" class="w-4 h-4 text-emerald-500"></i>
+            <span class="hidden md:inline">Settings</span>
+          </button>
+
+          <!-- Simulator Lab Modal Trigger -->
+          <button id="openSimulatorBtn" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 transition-all">
+            <i data-lucide="sliders" class="w-4 h-4"></i>
+            <span class="hidden lg:inline">Simulator</span>
+          </button>
+
+          <!-- Hardware Guide Trigger -->
+          <button id="openHardwareBtn" class="p-2 sm:px-3 sm:py-1.5 rounded-xl text-xs font-bold subpanel-card text-themed-secondary hover:text-themed-primary transition-all flex items-center space-x-1.5">
+            <i data-lucide="cpu" class="w-4 h-4 text-cyan-500"></i>
+            <span class="hidden xl:inline">Hardware</span>
+          </button>
+
+          <!-- Export CSV -->
+          <a href="/api/export/csv" download class="p-2 rounded-xl subpanel-card text-themed-secondary hover:text-themed-primary transition-all" title="Export CSV Data">
+            <i data-lucide="download" class="w-4 h-4"></i>
+          </a>
+
+          <!-- Sound Alarm Quick Toggle -->
+          <button id="soundToggleBtn" class="p-2 rounded-xl subpanel-card text-themed-secondary hover:text-themed-primary transition-all" title="Toggle Alarm Sound">
+            <i id="soundIcon" data-lucide="volume-2" class="w-4 h-4 text-emerald-500"></i>
+          </button>
+
+          <!-- User Profile & Sign Out Bar -->
+          <div class="flex items-center space-x-2 pl-2 border-l border-[var(--border-card)]">
+            <div class="hidden lg:flex flex-col text-right">
+              <span id="navUserName" class="text-xs font-bold text-themed-primary leading-tight">Abhas Gabhane</span>
+              <span id="navUserRole" class="text-[10px] text-emerald-500 font-semibold leading-tight">Sustainability Officer</span>
+            </div>
+            <div id="userAvatarPill" class="w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-400 text-slate-950 font-extrabold text-xs flex items-center justify-center shadow">
+              AG
+            </div>
+            <button id="logoutBtn" class="p-2 rounded-xl subpanel-card text-themed-muted hover:text-rose-500 transition-all" title="Sign Out">
+              <i data-lucide="log-out" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- DOMAIN SWITCHER SEGMENTED TABS -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[var(--nav-border)] flex space-x-2 sm:space-x-3 py-2 overflow-x-auto">
+        <a href="/environmental" data-tab="env" class="tab-btn px-4 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center space-x-2 bg-emerald-500 text-slate-950 transition-all shadow-sm">
+          <i data-lucide="wind" class="w-4 h-4"></i>
+          <span>Environmental Quality</span>
+        </a>
+        <a href="/waste" data-tab="waste" class="tab-btn px-4 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center space-x-2 subpanel-card text-themed-secondary hover:text-themed-primary transition-all">
+          <i data-lucide="trash-2" class="w-4 h-4"></i>
+          <span>Smart Waste Fleet</span>
+          <span id="wasteAlertPill" class="hidden text-[10px] px-1.5 py-0.2 rounded-full bg-rose-500 text-white font-mono font-bold">1</span>
+        </a>
+        <a href="/renewable" data-tab="energy" class="tab-btn px-4 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center space-x-2 subpanel-card text-themed-secondary hover:text-themed-primary transition-all">
+          <i data-lucide="sun-medium" class="w-4 h-4"></i>
+          <span>Renewable Microgrid</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Dashboard Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+      <!-- Hazard / Anomaly Alert Banner -->
+      <div id="anomalyBanner" class="hidden rounded-2xl border border-rose-500/40 bg-rose-500/10 p-4 flex items-center justify-between shadow-xl">
+        <div class="flex items-center space-x-3.5">
+          <div class="p-2.5 bg-rose-500/20 rounded-xl text-rose-500 animate-bounce">
+            <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 id="anomalyTitle" class="text-sm font-bold text-rose-500">Hazard Anomaly Triggered</h4>
+            <p id="anomalyDesc" class="text-xs text-rose-600 dark:text-rose-300">Sensor threshold violation currently in progress.</p>
+          </div>
+        </div>
+        <button id="dismissAnomalyBtn" class="px-3.5 py-1.5 bg-rose-500/20 hover:bg-rose-500/30 text-rose-600 dark:text-rose-300 text-xs font-bold rounded-xl border border-rose-500/30 transition-all">
+          Reset Nominal
+        </button>
+      </div>
+
+      <!-- ==================== TAB 1: ENVIRONMENTAL QUALITY VIEW ==================== -->
+      <div id="tabContentEnv" class="space-y-6">
+        
+        <!-- Precision KPI Instrument Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+          <!-- 1. TEMPERATURE -->
+          <div class="glass-panel rounded-2xl p-4 relative overflow-hidden transition-all group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-themed-muted flex items-center space-x-1.5">
+                <i data-lucide="thermometer" class="w-4 h-4 text-amber-500"></i>
+                <span>Temperature</span>
+              </span>
+              <button id="unitToggleBtn" class="text-[10px] px-2 py-0.5 rounded-lg subpanel-card text-themed-secondary font-mono font-bold hover:scale-105 transition-all">
+                °C / °F
+              </button>
+            </div>
+            <div class="flex items-baseline justify-between mt-2">
+              <div class="flex items-baseline space-x-1">
+                <span id="tempValue" class="text-3xl sm:text-4xl font-extrabold tracking-tight text-themed-primary font-mono metric-number">24.2</span>
+                <span id="tempUnit" class="text-sm font-bold text-themed-muted">°C</span>
+              </div>
+              <span id="tempStatusPill" class="text-xs px-2.5 py-0.5 rounded-full font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25">
+                Optimal
+              </span>
+            </div>
+            <div class="mt-3 pt-3 border-t border-[var(--border-card)] flex items-center justify-between text-[11px] text-themed-muted">
+              <span>Min: <span id="tempMin" class="text-themed-primary font-mono font-bold">21.4</span></span>
+              <span>Max: <span id="tempMax" class="text-themed-primary font-mono font-bold">25.8</span></span>
+              <span class="text-themed-muted font-mono">21-25°C</span>
+            </div>
+          </div>
+
+          <!-- 2. HUMIDITY -->
+          <div class="glass-panel rounded-2xl p-4 relative overflow-hidden transition-all group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-themed-muted flex items-center space-x-1.5">
+                <i data-lucide="droplets" class="w-4 h-4 text-cyan-500"></i>
+                <span>Humidity (RH)</span>
+              </span>
+              <span id="humidityStatusPill" class="text-xs px-2.5 py-0.5 rounded-full font-bold bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/25">
+                Comfortable
+              </span>
+            </div>
+            <div class="flex items-baseline justify-between mt-2">
+              <div class="flex items-baseline space-x-1">
+                <span id="humidityValue" class="text-3xl sm:text-4xl font-extrabold tracking-tight text-themed-primary font-mono metric-number">54.0</span>
+                <span class="text-sm font-bold text-themed-muted">%</span>
+              </div>
+              <div class="w-20 subpanel-card h-2.5 rounded-full overflow-hidden">
+                <div id="humidityBar" class="bg-cyan-500 h-full transition-all duration-500" style="width: 54%"></div>
+              </div>
+            </div>
+            <div class="mt-3 pt-3 border-t border-[var(--border-card)] flex items-center justify-between text-[11px] text-themed-muted">
+              <span>Dew Point: <span id="dewPoint" class="text-themed-primary font-mono font-bold">14.2°C</span></span>
+              <span class="text-themed-muted font-mono">40-60%</span>
+            </div>
+          </div>
+
+          <!-- 3. AIR QUALITY (AQI) -->
+          <div class="glass-panel rounded-2xl p-4 relative overflow-hidden transition-all group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-themed-muted flex items-center space-x-1.5">
+                <i data-lucide="wind" class="w-4 h-4 text-emerald-500"></i>
+                <span>Air Quality Index</span>
+              </span>
+              <span id="aqiStatusPill" class="text-xs px-2.5 py-0.5 rounded-full font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25">
+                Good
+              </span>
+            </div>
+            <div class="flex items-baseline justify-between mt-2">
+              <div class="flex items-baseline space-x-1">
+                <span id="aqiValue" class="text-3xl sm:text-4xl font-extrabold tracking-tight text-themed-primary font-mono metric-number">38</span>
+                <span class="text-xs font-bold text-themed-muted">AQI</span>
+              </div>
+              <div class="text-right text-[11px] text-themed-muted">
+                <div>PM2.5: <span id="pm25Value" class="text-themed-primary font-mono font-bold">8.4</span> µg/m³</div>
+                <div>PM10: <span id="pm10Value" class="text-themed-secondary font-mono font-bold">14.2</span> µg/m³</div>
+              </div>
+            </div>
+            <div class="mt-3 pt-3 border-t border-[var(--border-card)] flex items-center justify-between text-[11px] text-themed-muted">
+              <span>Scale: <span id="aqiDesc" class="text-emerald-600 dark:text-emerald-400 font-bold">Clean Air</span></span>
+              <span class="text-themed-muted font-mono">&lt;50 Good</span>
+            </div>
+          </div>
+
+          <!-- 4. CO2 CONCENTRATION -->
+          <div class="glass-panel rounded-2xl p-4 relative overflow-hidden transition-all group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-themed-muted flex items-center space-x-1.5">
+                <i data-lucide="atom" class="w-4 h-4 text-purple-500"></i>
+                <span>CO₂ Concentration</span>
+              </span>
+              <span id="co2StatusPill" class="text-xs px-2.5 py-0.5 rounded-full font-bold bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/25">
+                Normal
+              </span>
+            </div>
+            <div class="flex items-baseline justify-between mt-2">
+              <div class="flex items-baseline space-x-1">
+                <span id="co2Value" class="text-3xl sm:text-4xl font-extrabold tracking-tight text-themed-primary font-mono metric-number">580</span>
+                <span class="text-sm font-bold text-themed-muted">ppm</span>
+              </div>
+              <div class="w-20 subpanel-card h-2.5 rounded-full overflow-hidden">
+                <div id="co2Bar" class="bg-purple-500 h-full transition-all duration-500" style="width: 35%"></div>
+              </div>
+            </div>
+            <div class="mt-3 pt-3 border-t border-[var(--border-card)] flex items-center justify-between text-[11px] text-themed-muted">
+              <span>Ventilation: <span id="ventilationState" class="text-purple-600 dark:text-purple-300 font-bold">Adequate</span></span>
+              <span class="text-themed-muted font-mono">&lt;1000 ppm</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Secondary Sensor Instrument Strip -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          
+          <div class="glass-panel rounded-2xl p-3.5 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <div class="p-2.5 rounded-xl bg-indigo-500/10 text-indigo-500 border border-indigo-500/20"><i data-lucide="gauge" class="w-5 h-5"></i></div>
+              <div>
+                <div class="text-[11px] font-semibold text-themed-muted">Barometric Pressure</div>
+                <div class="flex items-baseline space-x-1">
+                  <span id="pressureValue" class="text-xl font-bold font-mono text-themed-primary">1013.2</span>
+                  <span class="text-xs text-themed-muted">hPa</span>
+                </div>
+              </div>
+            </div>
+            <span id="pressureTrend" class="px-2.5 py-1 rounded-xl subpanel-card text-themed-secondary font-bold text-xs">Stable</span>
+          </div>
+
+          <div class="glass-panel rounded-2xl p-3.5 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <div class="p-2.5 rounded-xl bg-amber-500/10 text-amber-500 border border-amber-500/20"><i data-lucide="volume-1" class="w-5 h-5"></i></div>
+              <div>
+                <div class="text-[11px] font-semibold text-themed-muted">Acoustic Noise</div>
+                <div class="flex items-baseline space-x-1">
+                  <span id="noiseValue" class="text-xl font-bold font-mono text-themed-primary">42.5</span>
+                  <span class="text-xs text-themed-muted">dB SPL</span>
+                </div>
+              </div>
+            </div>
+            <span id="noiseLevelPill" class="px-2.5 py-1 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25 font-bold text-xs">Quiet Room</span>
+          </div>
+
+          <div class="glass-panel rounded-2xl p-3.5 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <div class="p-2.5 rounded-xl bg-yellow-500/10 text-yellow-500 border border-yellow-500/20"><i data-lucide="sun" class="w-5 h-5"></i></div>
+              <div>
+                <div class="text-[11px] font-semibold text-themed-muted">Ambient Illuminance</div>
+                <div class="flex items-baseline space-x-1">
+                  <span id="lightValue" class="text-xl font-bold font-mono text-themed-primary">480</span>
+                  <span class="text-xs text-themed-muted">Lux</span>
+                </div>
+              </div>
+            </div>
+            <span id="lightDescPill" class="px-2.5 py-1 rounded-xl subpanel-card text-themed-secondary font-bold text-xs">Well Lit</span>
+          </div>
+
+        </div>
+
+        <!-- Real-Time Time-Series Live Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <div class="glass-panel rounded-3xl p-5 shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center space-x-2">
+                <i data-lucide="activity" class="w-4 h-4 text-emerald-500"></i>
+                <h3 class="text-sm font-bold text-themed-primary">Thermal & Moisture Dynamics</h3>
+              </div>
+              <div class="flex items-center space-x-3 text-xs">
+                <span class="flex items-center space-x-1 text-amber-500 font-bold"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span><span>Temp (°C)</span></span>
+                <span class="flex items-center space-x-1 text-cyan-500 font-bold"><span class="w-2.5 h-2.5 rounded-full bg-cyan-500"></span><span>Humidity (%)</span></span>
+              </div>
+            </div>
+            <div class="h-64 relative"><canvas id="tempHumidityChart"></canvas></div>
+          </div>
+
+          <div class="glass-panel rounded-3xl p-5 shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center space-x-2">
+                <i data-lucide="shield-alert" class="w-4 h-4 text-purple-500"></i>
+                <h3 class="text-sm font-bold text-themed-primary">Air Pollution & CO₂ Profile</h3>
+              </div>
+              <div class="flex items-center space-x-3 text-xs">
+                <span class="flex items-center space-x-1 text-emerald-500 font-bold"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span>AQI</span></span>
+                <span class="flex items-center space-x-1 text-rose-500 font-bold"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span><span>PM2.5</span></span>
+                <span class="flex items-center space-x-1 text-purple-500 font-bold"><span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span><span>CO₂</span></span>
+              </div>
+            </div>
+            <div class="h-64 relative"><canvas id="airQualityChart"></canvas></div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ==================== TAB 2: SMART WASTE MANAGEMENT VIEW ==================== -->
+      <div id="tabContentWaste" class="hidden space-y-6">
+
+        <!-- Waste Route Optimization Dispatch Banner -->
+        <div class="glass-panel rounded-3xl p-5 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div class="flex items-start space-x-3.5">
+            <div class="p-3 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded-2xl">
+              <i data-lucide="truck" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h3 class="text-base font-bold text-themed-primary">Dynamic Municipal Collection Route</h3>
+                <span id="routeStatusBadge" class="text-xs px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-300 border border-amber-500/30 font-bold">1 Bin Exceeding Threshold</span>
+              </div>
+              <p id="routeRecommendation" class="text-xs text-themed-muted mt-1">
+                Automated Route: Dispatch pickup to <span class="text-amber-500 font-bold">Central Plaza (BIN-02)</span> within 45 minutes to prevent overflow.
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3 w-full md:w-auto">
+            <button id="dispatchTruckBtn" class="w-full md:w-auto px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white text-xs font-bold rounded-2xl flex items-center justify-center space-x-2 transition-all shadow-lg">
+              <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+              <span>Simulate Collection Run</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Live Smart Waste Bins Grid -->
+        <div id="wasteBinsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Rendered dynamically by JavaScript -->
+        </div>
+
+        <!-- Composter Digester & Segregation Compliance -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <div class="lg:col-span-2 glass-panel rounded-3xl p-5 shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center space-x-2">
+                <i data-lucide="sprout" class="w-5 h-5 text-emerald-500"></i>
+                <h3 class="text-sm font-bold text-themed-primary">Smart Organic Composter & Biogas Digester</h3>
+              </div>
+              <span class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-bold">Active Microbial Digestion</span>
+            </div>
+            <div class="grid grid-cols-3 gap-3 mb-4">
+              <div class="subpanel-card p-3.5 rounded-2xl">
+                <div class="text-[11px] text-themed-muted font-bold">Internal Core Temp</div>
+                <div class="text-xl font-bold font-mono text-themed-primary mt-1">54.2 °C</div>
+                <div class="text-[10px] text-emerald-500 mt-1 font-bold">Thermophilic Optimal</div>
+              </div>
+              <div class="subpanel-card p-3.5 rounded-2xl">
+                <div class="text-[11px] text-themed-muted font-bold">Moisture Content</div>
+                <div class="text-xl font-bold font-mono text-themed-primary mt-1">58.0 %</div>
+                <div class="text-[10px] text-cyan-500 mt-1 font-bold">Ideal Microbial Zone</div>
+              </div>
+              <div class="subpanel-card p-3.5 rounded-2xl">
+                <div class="text-[11px] text-themed-muted font-bold">Biogas ($CH_4$) Yield</div>
+                <div class="text-xl font-bold font-mono text-themed-primary mt-1">2.4 m³/day</div>
+                <div class="text-[10px] text-purple-500 mt-1 font-bold">Clean Energy Captured</div>
+              </div>
+            </div>
+            <p class="text-xs text-themed-muted leading-relaxed">
+              Real-time temperature and decomposition methane ($CH_4$) sensors track organic digestion, safely diverting landfill waste into nutrient-dense compost and powering micro-turbines.
+            </p>
+          </div>
+
+          <div class="glass-panel rounded-3xl p-5 shadow-xl space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-bold text-themed-primary">Facility Segregation Rate</h3>
+              <span class="text-xs font-mono font-bold text-emerald-500">82% Diverted</span>
+            </div>
+            <div class="space-y-2.5 text-xs">
+              <div>
+                <div class="flex justify-between text-themed-muted mb-1"><span>Recyclables</span><span class="font-mono text-themed-primary font-bold">42%</span></div>
+                <div class="w-full subpanel-card h-2 rounded-full overflow-hidden"><div class="bg-blue-500 h-full" style="width: 42%"></div></div>
+              </div>
+              <div>
+                <div class="flex justify-between text-themed-muted mb-1"><span>Organic Compost</span><span class="font-mono text-themed-primary font-bold">35%</span></div>
+                <div class="w-full subpanel-card h-2 rounded-full overflow-hidden"><div class="bg-emerald-500 h-full" style="width: 35%"></div></div>
+              </div>
+              <div>
+                <div class="flex justify-between text-themed-muted mb-1"><span>Landfill Residual</span><span class="font-mono text-themed-primary font-bold">18%</span></div>
+                <div class="w-full subpanel-card h-2 rounded-full overflow-hidden"><div class="bg-slate-400 dark:bg-slate-600 h-full" style="width: 18%"></div></div>
+              </div>
+              <div>
+                <div class="flex justify-between text-themed-muted mb-1"><span>E-Waste Diverted</span><span class="font-mono text-themed-primary font-bold">5%</span></div>
+                <div class="w-full subpanel-card h-2 rounded-full overflow-hidden"><div class="bg-amber-500 h-full" style="width: 5%"></div></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ==================== TAB 3: RENEWABLE ENERGY & MICROGRID VIEW ==================== -->
+      <div id="tabContentEnergy" class="hidden space-y-6">
+
+        <!-- Clean Energy KPI Instrument Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+          <!-- Solar PV Generation -->
+          <div class="glass-panel rounded-2xl p-4 transition-all group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-themed-muted flex items-center space-x-1.5">
+                <i data-lucide="sun-medium" class="w-4 h-4 text-yellow-500"></i>
+                <span>Solar PV Output</span>
+              </span>
+              <span class="text-xs px-2.5 py-0.5 rounded-full font-bold bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border border-yellow-500/25">
+                Generating
+              </span>
+            </div>
+            <div class="flex items-baseline space-x-1 mt-2">
+              <span id="solarWattsVal" class="text-3xl sm:text-4xl font-extrabold tracking-tight text-themed-primary font-mono metric-number">--</span>
+              <span class="text-sm font-bold text-themed-muted">W</span>
+            </div>
+            <div class="mt-3 pt-3 border-t border-[var(--border-card)] flex items-center justify-between text-[11px] text-themed-muted">
+              <span>Today: <span id="dailyKwhVal" class="text-themed-primary font-mono font-bold">--</span> kWh</span>
+              <span>Efficiency: <span id="panelEffVal" class="text-yellow-500 font-mono font-bold">--%</span></span>
+            </div>
+          </div>
+
+          <!-- Battery Storage (BESS) -->
+          <div class="glass-panel rounded-2xl p-4 transition-all group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-themed-muted flex items-center space-x-1.5">
+                <i data-lucide="battery-charging" class="w-4 h-4 text-emerald-500"></i>
+                <span>Battery BESS Storage</span>
+              </span>
+              <span id="batteryStatusPill" class="text-xs px-2.5 py-0.5 rounded-full font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25">
+                Charging
+              </span>
+            </div>
+            <div class="flex items-baseline justify-between mt-2">
+              <div class="flex items-baseline space-x-1">
+                <span id="batterySocVal" class="text-3xl sm:text-4xl font-extrabold tracking-tight text-themed-primary font-mono metric-number">--</span>
+                <span class="text-sm font-bold text-themed-muted">%</span>
+              </div>
+              <div class="w-20 subpanel-card h-2.5 rounded-full overflow-hidden">
+                <div id="batteryBar" class="bg-emerald-500 h-full transition-all duration-500" style="width: 80%"></div>
+              </div>
+            </div>
+            <div class="mt-3 pt-3 border-t border-[var(--border-card)] flex items-center justify-between text-[11px] text-themed-muted">
+              <span>Voltage: <span id="batteryVoltVal" class="text-themed-primary font-mono font-bold">--V</span></span>
+              <span class="text-themed-muted font-mono">48V LiFePO4</span>
+            </div>
+          </div>
+
+          <!-- Facility Load Demand -->
+          <div class="glass-panel rounded-2xl p-4 transition-all group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-themed-muted flex items-center space-x-1.5">
+                <i data-lucide="zap" class="w-4 h-4 text-cyan-500"></i>
+                <span>Facility Demand</span>
+              </span>
+              <span id="cleanRatioPill" class="text-xs px-2.5 py-0.5 rounded-full font-bold bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/25">
+                --% Green
+              </span>
+            </div>
+            <div class="flex items-baseline space-x-1 mt-2">
+              <span id="facilityLoadVal" class="text-3xl sm:text-4xl font-extrabold tracking-tight text-themed-primary font-mono metric-number">--</span>
+              <span class="text-sm font-bold text-themed-muted">W</span>
+            </div>
+            <div class="mt-3 pt-3 border-t border-[var(--border-card)] flex items-center justify-between text-[11px] text-themed-muted">
+              <span>Grid Net: <span id="gridPowerVal" class="text-cyan-500 font-mono font-bold">--</span> W</span>
+              <span class="text-themed-muted font-mono">Bidirectional</span>
+            </div>
+          </div>
+
+          <!-- Carbon Offset Counter -->
+          <div class="glass-panel rounded-2xl p-4 transition-all group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-themed-muted flex items-center space-x-1.5">
+                <i data-lucide="leaf" class="w-4 h-4 text-emerald-500"></i>
+                <span>Carbon Offset</span>
+              </span>
+              <span class="text-xs px-2.5 py-0.5 rounded-full font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25">
+                Net-Zero
+              </span>
+            </div>
+            <div class="flex items-baseline space-x-1 mt-2">
+              <span id="co2SavedVal" class="text-3xl sm:text-4xl font-extrabold tracking-tight text-emerald-500 font-mono metric-number">--</span>
+              <span class="text-sm font-bold text-themed-muted">kg CO₂</span>
+            </div>
+            <div class="mt-3 pt-3 border-t border-[var(--border-card)] flex items-center justify-between text-[11px] text-themed-muted">
+              <span>Trees Equiv: <span id="treesEquivVal" class="text-emerald-500 font-mono font-bold">--</span> 🌲</span>
+              <span class="text-themed-muted font-mono">Today</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Interactive Animated Microgrid Power Flow Diagram -->
+        <div class="glass-panel rounded-3xl p-6 shadow-xl relative overflow-hidden">
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center space-x-2">
+              <i data-lucide="share-2" class="w-5 h-5 text-cyan-500"></i>
+              <h3 class="text-sm font-bold text-themed-primary">Interactive Clean Microgrid Power Flow</h3>
+            </div>
+            <span class="text-xs text-themed-muted font-mono">Dynamic Energy Routing Engine</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-center text-center">
+            
+            <div class="subpanel-card p-4 rounded-2xl border border-yellow-500/30 relative">
+              <div class="w-12 h-12 mx-auto rounded-xl bg-yellow-500/10 text-yellow-500 flex items-center justify-center mb-2 border border-yellow-500/20">
+                <i data-lucide="sun" class="w-6 h-6"></i>
+              </div>
+              <div class="text-xs font-bold text-themed-primary">Rooftop Solar PV</div>
+              <div id="flowSolarWatts" class="text-xl font-extrabold font-mono text-yellow-500 mt-1">-- W</div>
+              <div class="text-[10px] text-themed-muted font-mono mt-0.5">Clean Generation</div>
+            </div>
+
+            <div class="subpanel-card p-4 rounded-2xl border border-cyan-500/30 relative">
+              <div class="w-12 h-12 mx-auto rounded-xl bg-cyan-500/10 text-cyan-500 flex items-center justify-center mb-2 border border-cyan-500/20">
+                <i data-lucide="cpu" class="w-6 h-6"></i>
+              </div>
+              <div class="text-xs font-bold text-themed-primary">Hybrid MPPT Inverter</div>
+              <div id="flowInverterEff" class="text-xl font-extrabold font-mono text-cyan-500 mt-1">98.4% Eff</div>
+              <div class="text-[10px] text-themed-muted font-mono mt-0.5">Bidirectional Flow</div>
+            </div>
+
+            <div class="subpanel-card p-4 rounded-2xl border border-emerald-500/30 relative">
+              <div class="w-12 h-12 mx-auto rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-2 border border-emerald-500/20">
+                <i data-lucide="battery" class="w-6 h-6"></i>
+              </div>
+              <div class="text-xs font-bold text-themed-primary">Lithium BESS Bank</div>
+              <div id="flowBatterySoc" class="text-xl font-extrabold font-mono text-emerald-500 mt-1">--%</div>
+              <div id="flowBatteryState" class="text-[10px] text-themed-muted font-mono mt-0.5">Charging</div>
+            </div>
+
+            <div class="subpanel-card p-4 rounded-2xl border border-purple-500/30 relative">
+              <div class="w-12 h-12 mx-auto rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center mb-2 border border-purple-500/20">
+                <i data-lucide="building-2" class="w-6 h-6"></i>
+              </div>
+              <div class="text-xs font-bold text-themed-primary">Building Load / Grid</div>
+              <div id="flowFacilityLoad" class="text-xl font-extrabold font-mono text-purple-500 mt-1">-- W</div>
+              <div id="flowGridStatus" class="text-[10px] text-themed-muted font-mono mt-0.5">Surplus Exporting</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Real-Time Generation vs Demand Graph -->
+        <div class="glass-panel rounded-3xl p-5 shadow-xl">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center space-x-2">
+              <i data-lucide="line-chart" class="w-4 h-4 text-yellow-500"></i>
+              <h3 class="text-sm font-bold text-themed-primary">Real-Time Solar Generation vs. Facility Demand</h3>
+            </div>
+            <div class="flex items-center space-x-3 text-xs">
+              <span class="flex items-center space-x-1 text-yellow-500 font-bold"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span><span>Solar (Watts)</span></span>
+              <span class="flex items-center space-x-1 text-purple-500 font-bold"><span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span><span>Demand (Watts)</span></span>
+            </div>
+          </div>
+          <div class="h-64 relative"><canvas id="energyStreamChart"></canvas></div>
+        </div>
+
+      </div>
+
+      <!-- INCIDENT LOG & ALERT FEED -->
+      <div class="glass-panel rounded-3xl p-5 shadow-xl">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="bell" class="w-4 h-4 text-amber-500"></i>
+            <h3 class="text-sm font-bold text-themed-primary">Unified Sustainability Incident & Alert Feed</h3>
+            <span id="alertCountBadge" class="text-[10px] px-2.5 py-0.5 rounded-full subpanel-card text-themed-muted font-mono">0 alerts</span>
+          </div>
+          <button id="clearAlertsBtn" class="text-xs text-themed-muted hover:text-themed-primary hover:underline font-semibold">
+            Clear Feed
+          </button>
+        </div>
+
+        <div id="alertsContainer" class="space-y-2 max-h-48 overflow-y-auto pr-1">
+          <div class="text-xs text-themed-muted py-3 text-center italic">
+            No active threshold violations recorded. System running nominal.
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- ======================================================== -->
+    <!-- 4. COMPREHENSIVE SETTINGS & CUSTOMIZATION MODAL          -->
+    <!-- ======================================================== -->
+    <div id="settingsModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 transition-opacity">
+      <div class="glass-panel-elevated rounded-3xl max-w-2xl w-full p-6 shadow-2xl relative space-y-6 max-h-[92vh] overflow-y-auto">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between border-b border-[var(--border-card)] pb-4">
+          <div class="flex items-center space-x-2.5">
+            <div class="p-2 rounded-xl bg-emerald-500/10 text-emerald-500">
+              <i data-lucide="sliders-horizontal" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-extrabold text-themed-primary">System Preferences & Customization</h3>
+              <p class="text-xs text-themed-muted">Configure appearance, regional units, thresholds & acoustics</p>
+            </div>
+          </div>
+          <button id="closeSettingsBtn" class="p-1.5 rounded-xl subpanel-card text-themed-muted hover:text-themed-primary">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Settings Category Switcher Tabs -->
+        <div class="flex space-x-2 border-b border-[var(--border-card)] pb-2 overflow-x-auto">
+          <button data-settings-tab="appearance" class="settings-tab-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 flex items-center space-x-1.5">
+            <i data-lucide="palette" class="w-3.5 h-3.5"></i>
+            <span>Theme & Display</span>
+          </button>
+          <button data-settings-tab="units" class="settings-tab-btn px-3 py-1.5 rounded-xl text-xs font-bold subpanel-card text-themed-muted hover:text-themed-primary flex items-center space-x-1.5">
+            <i data-lucide="ruler" class="w-3.5 h-3.5"></i>
+            <span>Units & Regional</span>
+          </button>
+          <button data-settings-tab="audio" class="settings-tab-btn px-3 py-1.5 rounded-xl text-xs font-bold subpanel-card text-themed-muted hover:text-themed-primary flex items-center space-x-1.5">
+            <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+            <span>Audio & Chimes</span>
+          </button>
+          <button data-settings-tab="thresholds" class="settings-tab-btn px-3 py-1.5 rounded-xl text-xs font-bold subpanel-card text-themed-muted hover:text-themed-primary flex items-center space-x-1.5">
+            <i data-lucide="bell-ring" class="w-3.5 h-3.5"></i>
+            <span>Thresholds</span>
+          </button>
+        </div>
+
+        <!-- 1. APPEARANCE & THEME TAB -->
+        <div id="settingsTabAppearance" class="space-y-5">
+          <!-- Light / Dark / Auto Mode Selector -->
+          <div>
+            <label class="block text-xs font-bold text-themed-secondary mb-2 uppercase tracking-wider">Color Theme Mode</label>
+            <div class="grid grid-cols-3 gap-3">
+              <button id="themeDarkBtn" type="button" class="theme-choice-card p-3 rounded-2xl glass-panel text-center hover:scale-[1.02] border-2 border-emerald-500 transition-all">
+                <i data-lucide="moon" class="w-5 h-5 mx-auto mb-1 text-emerald-500"></i>
+                <div class="text-xs font-bold text-themed-primary">Dark Mode</div>
+                <div class="text-[10px] text-themed-muted">Obsidian Deep</div>
+              </button>
+              <button id="themeLightBtn" type="button" class="theme-choice-card p-3 rounded-2xl glass-panel text-center hover:scale-[1.02] border-2 border-transparent transition-all">
+                <i data-lucide="sun" class="w-5 h-5 mx-auto mb-1 text-amber-500"></i>
+                <div class="text-xs font-bold text-themed-primary">Light Mode</div>
+                <div class="text-[10px] text-themed-muted">Classic Ivory</div>
+              </button>
+              <button id="themeAutoBtn" type="button" class="theme-choice-card p-3 rounded-2xl glass-panel text-center hover:scale-[1.02] border-2 border-transparent transition-all">
+                <i data-lucide="monitor" class="w-5 h-5 mx-auto mb-1 text-cyan-500"></i>
+                <div class="text-xs font-bold text-themed-primary">System Match</div>
+                <div class="text-[10px] text-themed-muted">Follow OS Theme</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Accent Color Swatches -->
+          <div>
+            <label class="block text-xs font-bold text-themed-secondary mb-2 uppercase tracking-wider">Accent Palette</label>
+            <div class="grid grid-cols-5 gap-2.5">
+              <button data-accent="emerald" class="accent-btn p-2.5 rounded-xl subpanel-card text-center hover:scale-105 border-2 border-emerald-500 transition-all">
+                <span class="w-5 h-5 rounded-full bg-emerald-500 mx-auto block mb-1"></span>
+                <span class="text-[10px] font-bold text-themed-primary block">Emerald</span>
+              </button>
+              <button data-accent="cyan" class="accent-btn p-2.5 rounded-xl subpanel-card text-center hover:scale-105 border-2 border-transparent transition-all">
+                <span class="w-5 h-5 rounded-full bg-cyan-500 mx-auto block mb-1"></span>
+                <span class="text-[10px] font-bold text-themed-primary block">Ocean Cyan</span>
+              </button>
+              <button data-accent="amber" class="accent-btn p-2.5 rounded-xl subpanel-card text-center hover:scale-105 border-2 border-transparent transition-all">
+                <span class="w-5 h-5 rounded-full bg-amber-500 mx-auto block mb-1"></span>
+                <span class="text-[10px] font-bold text-themed-primary block">Solar Gold</span>
+              </button>
+              <button data-accent="purple" class="accent-btn p-2.5 rounded-xl subpanel-card text-center hover:scale-105 border-2 border-transparent transition-all">
+                <span class="w-5 h-5 rounded-full bg-purple-500 mx-auto block mb-1"></span>
+                <span class="text-[10px] font-bold text-themed-primary block">Deep Violet</span>
+              </button>
+              <button data-accent="monochrome" class="accent-btn p-2.5 rounded-xl subpanel-card text-center hover:scale-105 border-2 border-transparent transition-all">
+                <span class="w-5 h-5 rounded-full bg-slate-500 mx-auto block mb-1"></span>
+                <span class="text-[10px] font-bold text-themed-primary block">Monochrome</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Interface Density -->
+          <div>
+            <label class="block text-xs font-bold text-themed-secondary mb-2 uppercase tracking-wider">UI Information Density</label>
+            <div class="grid grid-cols-2 gap-3">
+              <button id="densityComfortableBtn" class="density-btn p-3 rounded-2xl glass-panel text-left border-2 border-emerald-500 transition-all">
+                <div class="text-xs font-bold text-themed-primary">Spacious Executive</div>
+                <div class="text-[11px] text-themed-muted mt-0.5">Classic padded layout for clarity & presentations</div>
+              </button>
+              <button id="densityCompactBtn" class="density-btn p-3 rounded-2xl glass-panel text-left border-2 border-transparent transition-all">
+                <div class="text-xs font-bold text-themed-primary">Compact Data-Dense</div>
+                <div class="text-[11px] text-themed-muted mt-0.5">Tight grid optimized for telemetry monitoring</div>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. UNITS & REGIONAL TAB -->
+        <div id="settingsTabUnits" class="hidden space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-themed-secondary mb-1">Temperature Unit</label>
+              <select id="settingsTempUnit" class="w-full subpanel-card rounded-xl p-2.5 text-xs text-themed-primary font-bold">
+                <option value="C">Celsius (°C)</option>
+                <option value="F">Fahrenheit (°F)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-themed-secondary mb-1">Barometric Pressure</label>
+              <select id="settingsPressureUnit" class="w-full subpanel-card rounded-xl p-2.5 text-xs text-themed-primary font-bold">
+                <option value="hPa">Hectopascals (hPa)</option>
+                <option value="mmHg">Millimeters of Mercury (mmHg)</option>
+                <option value="psi">Pounds per sq inch (PSI)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-themed-secondary mb-1">Waste Mass Unit</label>
+              <select id="settingsMassUnit" class="w-full subpanel-card rounded-xl p-2.5 text-xs text-themed-primary font-bold">
+                <option value="kg">Kilograms (kg)</option>
+                <option value="lbs">Pounds (lbs)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-themed-secondary mb-1">Clean Power Scale</label>
+              <select id="settingsPowerScale" class="w-full subpanel-card rounded-xl p-2.5 text-xs text-themed-primary font-bold">
+                <option value="W">Watts (W)</option>
+                <option value="kW">Kilowatts (kW)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. AUDIO & ACOUSTICS TAB -->
+        <div id="settingsTabAudio" class="hidden space-y-4">
+          <div class="flex items-center justify-between p-3 rounded-2xl subpanel-card">
+            <div>
+              <div class="text-xs font-bold text-themed-primary">Master Alarm Acoustics</div>
+              <div class="text-[11px] text-themed-muted">Synthesize audio alerts on threshold violations</div>
+            </div>
+            <input id="settingsAudioMaster" type="checkbox" checked class="w-5 h-5 accent-emerald-500 rounded cursor-pointer">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-themed-secondary mb-1">Acoustic Chime Preset</label>
+            <select id="settingsChimePreset" class="w-full subpanel-card rounded-xl p-2.5 text-xs text-themed-primary font-bold">
+              <option value="triad">Modern Harmonic Triad (Synthesizer Chord)</option>
+              <option value="bell">Classic Piano Bell (Gentle Resonance)</option>
+              <option value="ping">Digital Radar Ping (Clean Pulse)</option>
+              <option value="click">Tactile Mechanical Relay (Minimalist)</option>
+            </select>
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs font-bold text-themed-secondary mb-1">
+              <span>Volume Level</span>
+              <span id="volumePctDisplay" class="font-mono text-emerald-500">60%</span>
+            </div>
+            <input id="settingsVolumeSlider" type="range" min="10" max="100" value="60" class="w-full accent-emerald-500 cursor-pointer">
+          </div>
+
+          <button id="testAudioChimeBtn" type="button" class="w-full py-2.5 px-4 rounded-xl subpanel-card text-xs font-bold text-emerald-500 flex items-center justify-center space-x-2 hover:bg-emerald-500/10 transition-all">
+            <i data-lucide="play" class="w-4 h-4"></i>
+            <span>Test Chime Acoustic Feedback</span>
+          </button>
+        </div>
+
+        <!-- 4. THRESHOLDS & ALARM LIMITS TAB -->
+        <div id="settingsTabThresholds" class="hidden space-y-4">
+          <div class="grid grid-cols-2 gap-3.5 text-xs">
+            <div>
+              <label class="block font-bold text-themed-secondary mb-1">Max Temp Alert (°C)</label>
+              <input id="threshTempMax" type="number" step="0.5" value="32.0" class="w-full subpanel-card rounded-xl p-2 text-themed-primary font-mono font-bold">
+            </div>
+            <div>
+              <label class="block font-bold text-themed-secondary mb-1">AQI Critical Limit</label>
+              <input id="threshAqiCrit" type="number" value="150" class="w-full subpanel-card rounded-xl p-2 text-themed-primary font-mono font-bold">
+            </div>
+            <div>
+              <label class="block font-bold text-themed-secondary mb-1">CO₂ Warning Limit (ppm)</label>
+              <input id="threshCo2Warn" type="number" value="1000" class="w-full subpanel-card rounded-xl p-2 text-themed-primary font-mono font-bold">
+            </div>
+            <div>
+              <label class="block font-bold text-themed-secondary mb-1">Waste Overflow Alert (%)</label>
+              <input id="threshBinCrit" type="number" value="90" class="w-full subpanel-card rounded-xl p-2 text-themed-primary font-mono font-bold">
+            </div>
+          </div>
+
+          <button id="saveThresholdsBtn" type="button" class="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center justify-center space-x-2 transition-all shadow-md">
+            <i data-lucide="save" class="w-4 h-4"></i>
+            <span>Save & Synchronize Thresholds to Server</span>
+          </button>
+          <div id="threshSavedToast" class="hidden text-center text-xs text-emerald-500 font-bold font-mono">
+            ✓ Threshold settings successfully updated on server!
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="pt-4 border-t border-[var(--border-card)] flex items-center justify-between text-xs">
+          <button id="resetDefaultsBtn" class="text-themed-muted hover:text-rose-500 font-semibold transition-all">
+            Reset All to Defaults
+          </button>
+          <button id="closeSettingsOkBtn" class="px-5 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold hover:bg-emerald-400 transition-all shadow-md">
+            Apply & Close
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= SIMULATOR CONTROLS MODAL ================= -->
+    <div id="simulatorModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+      <div class="glass-panel-elevated rounded-3xl max-w-xl w-full p-6 shadow-2xl relative space-y-5 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between border-b border-[var(--border-card)] pb-3">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="sliders" class="w-5 h-5 text-emerald-500"></i>
+            <h3 class="text-base font-bold text-themed-primary">Sustainability Multi-Domain Simulator Lab</h3>
+          </div>
+          <button id="closeSimulatorBtn" class="p-1 rounded-lg text-themed-muted hover:text-themed-primary">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Air Quality Stress Tests -->
+        <div>
+          <label class="block text-xs font-bold text-themed-secondary uppercase tracking-wider mb-2">
+            Environmental Stress Tests
+          </label>
+          <div class="grid grid-cols-2 gap-2">
+            <button data-anomaly="smoke" class="anomaly-btn px-3 py-2.5 rounded-xl text-xs font-bold bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 border border-rose-500/30 flex items-center space-x-2 transition-all">
+              <span>🔥 Fire / PM2.5 Spike</span>
+            </button>
+            <button data-anomaly="heatwave" class="anomaly-btn px-3 py-2.5 rounded-xl text-xs font-bold bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 border border-amber-500/30 flex items-center space-x-2 transition-all">
+              <span>☀️ Extreme Heatwave</span>
+            </button>
+            <button data-anomaly="co2_spike" class="anomaly-btn px-3 py-2.5 rounded-xl text-xs font-bold bg-purple-500/10 hover:bg-purple-500/20 text-purple-500 border border-purple-500/30 flex items-center space-x-2 transition-all">
+              <span>💨 Poor Air / CO₂ Spike</span>
+            </button>
+            <button data-anomaly="storm" class="anomaly-btn px-3 py-2.5 rounded-xl text-xs font-bold bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-500 border border-cyan-500/30 flex items-center space-x-2 transition-all">
+              <span>⛈️ Severe Storm Surge</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Waste & Energy Stress Tests -->
+        <div class="border-t border-[var(--border-card)] pt-4">
+          <label class="block text-xs font-bold text-themed-secondary uppercase tracking-wider mb-2">
+            Waste & Clean Energy Stress Tests
+          </label>
+          <div class="grid grid-cols-2 gap-2">
+            <button data-anomaly="bin_overflow" class="anomaly-btn px-3 py-2.5 rounded-xl text-xs font-bold bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 border border-rose-500/30 flex items-center space-x-2 transition-all">
+              <span>🗑️ Bin #2 Overflow (>95%)</span>
+            </button>
+            <button data-anomaly="methane_leak" class="anomaly-btn px-3 py-2.5 rounded-xl text-xs font-bold bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 border border-amber-500/30 flex items-center space-x-2 transition-all">
+              <span>⚠️ Organic Methane Spike</span>
+            </button>
+            <button data-anomaly="solar_cloud" class="anomaly-btn px-3 py-2.5 rounded-xl text-xs font-bold bg-blue-500/10 hover:bg-blue-500/20 text-blue-500 border border-blue-500/30 flex items-center space-x-2 transition-all">
+              <span>☁️ Heavy Cloud (Solar -80%)</span>
+            </button>
+            <button data-anomaly="grid_blackout" class="anomaly-btn px-3 py-2.5 rounded-xl text-xs font-bold bg-orange-500/10 hover:bg-orange-500/20 text-orange-500 border border-orange-500/30 flex items-center space-x-2 transition-all">
+              <span>🔌 Grid Blackout (100% Islanded)</span>
+            </button>
+          </div>
+          <button data-anomaly="reset" class="anomaly-btn mt-3 w-full px-3 py-2.5 rounded-xl text-xs font-bold subpanel-card text-themed-secondary hover:text-themed-primary text-center transition-all">
+            🔄 Reset All Domains to Baseline Nominal
+          </button>
+        </div>
+
+        <!-- Simulation Stream Controls -->
+        <div class="border-t border-[var(--border-card)] pt-4 flex items-center justify-between">
+          <button id="togglePauseBtn" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center space-x-2 transition-all shadow-md">
+            <i id="pauseIcon" data-lucide="pause" class="w-4 h-4"></i>
+            <span id="pauseBtnText">Pause Stream</span>
+          </button>
+          <div class="flex items-center space-x-2">
+            <span class="text-xs text-themed-muted font-mono font-bold">Rate:</span>
+            <select id="intervalSelect" class="subpanel-card text-xs font-mono font-bold rounded-xl px-3 py-1.5 text-themed-primary">
+              <option value="0.5">0.5s (Turbo)</option>
+              <option value="1.0">1.0s (Fast)</option>
+              <option value="1.5" selected>1.5s (Normal)</option>
+              <option value="3.0">3.0s (Relaxed)</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= HARDWARE INTEGRATION MODAL ================= -->
+    <div id="hardwareModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+      <div class="glass-panel-elevated rounded-3xl max-w-2xl w-full p-6 shadow-2xl relative space-y-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between border-b border-[var(--border-card)] pb-3">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="cpu" class="w-5 h-5 text-cyan-500"></i>
+            <h3 class="text-base font-bold text-themed-primary">IoT Hardware Sensors & Microcontroller Pinout</h3>
+          </div>
+          <button id="closeHardwareBtn" class="p-1 rounded-lg text-themed-muted hover:text-themed-primary">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <div class="space-y-3 text-xs text-themed-muted leading-relaxed">
+          <p>Microcontrollers connect over WiFi using HTTP REST:</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 font-mono text-[11px]">
+            <div class="subpanel-card p-3 rounded-2xl">
+              <div class="font-bold text-emerald-500 mb-1">🌿 Environment</div>
+              <div>• DHT22 (Temp & Hum)</div>
+              <div>• MQ-135 (Air Quality)</div>
+              <div>• BMP280 (Pressure)</div>
+            </div>
+            <div class="subpanel-card p-3 rounded-2xl">
+              <div class="font-bold text-amber-500 mb-1">🗑️ Smart Waste</div>
+              <div>• HC-SR04 (Ultrasonic)</div>
+              <div>• MQ-4 (Methane Gas)</div>
+              <div>• HX711 (Weight Cell)</div>
+            </div>
+            <div class="subpanel-card p-3 rounded-2xl">
+              <div class="font-bold text-yellow-500 mb-1">⚡ Clean Energy</div>
+              <div>• INA219 (Solar PV V/A)</div>
+              <div>• PZEM-004T (AC Power)</div>
+              <div>• LDR (Irradiance)</div>
+            </div>
+          </div>
+
+          <div class="text-xs font-bold text-themed-secondary uppercase tracking-wider mt-2">ESP32 Sample REST POST</div>
+          <pre class="subpanel-card p-3 rounded-2xl text-[11px] text-cyan-500 font-mono overflow-x-auto"><code>HTTPClient http;
+http.begin("http://&lt;PC_IP&gt;:8000/api/telemetry");
+http.addHeader("Content-Type", "application/json");
+http.POST("{\"temperature\":24.2,\"humidity\":52.0,\"aqi\":38,\"source\":\"ESP32-Node\"}");</code></pre>
+        </div>
+
+        <div class="pt-2 text-right">
+          <button id="closeHardwareOkBtn" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-cyan-600 hover:bg-cyan-500 text-white transition-all shadow-md">
+            Close Guide
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- End #appContainer -->
+
+  <!-- APPLICATION JAVASCRIPT -->
+  <script src="/static/app.js" onerror="this.onerror=null;this.src='./app.js';"></script>
+</body>
+</html>

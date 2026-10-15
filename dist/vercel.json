@@ -1,0 +1,10 @@
+﻿{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/environmental", "destination": "/index.html" },
+    { "source": "/waste", "destination": "/index.html" },
+    { "source": "/renewable", "destination": "/index.html" },
+    { "source": "/robots.txt", "destination": "/robots.txt" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

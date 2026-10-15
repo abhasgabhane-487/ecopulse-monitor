@@ -1,0 +1,259 @@
+/* EcoPulse Classic & Enterprise Design System */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Theme Tokens - Default Light Mode */
+  --bg-app: #f8fafc;
+  --bg-app-rgb: 248, 250, 252;
+  --bg-card: #ffffff;
+  --bg-card-elevated: #ffffff;
+  --border-card: rgba(15, 23, 42, 0.09);
+  --border-card-hover: rgba(16, 185, 129, 0.4);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-subtle: #94a3b8;
+  --nav-bg: rgba(255, 255, 255, 0.88);
+  --nav-border: rgba(15, 23, 42, 0.08);
+  --subpanel-bg: #f1f5f9;
+  --subpanel-border: rgba(15, 23, 42, 0.06);
+  --shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.03);
+  --shadow-card-elevated: 0 20px 40px -12px rgba(15, 23, 42, 0.12), 0 1px 3px rgba(15, 23, 42, 0.04);
+  
+  /* Dynamic Accent Color Default (Emerald) */
+  --accent-primary: #10b981;
+  --accent-primary-hover: #059669;
+  --accent-light: rgba(16, 185, 129, 0.12);
+  --accent-border: rgba(16, 185, 129, 0.28);
+  --accent-text: #047857;
+
+  /* Grid lines */
+  --grid-line-color: rgba(15, 23, 42, 0.04);
+}
+
+/* Dark Mode Overrides */
+html.dark {
+  --bg-app: #080d16;
+  --bg-app-rgb: 8, 13, 22;
+  --bg-card: rgba(15, 23, 42, 0.75);
+  --bg-card-elevated: rgba(15, 23, 42, 0.92);
+  --border-card: rgba(255, 255, 255, 0.08);
+  --border-card-hover: rgba(16, 185, 129, 0.35);
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-subtle: #64748b;
+  --nav-bg: rgba(9, 14, 23, 0.9);
+  --nav-border: rgba(255, 255, 255, 0.08);
+  --subpanel-bg: rgba(2, 6, 23, 0.7);
+  --subpanel-border: rgba(255, 255, 255, 0.07);
+  --shadow-card: 0 10px 30px -5px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  --shadow-card-elevated: 0 24px 50px -10px rgba(0, 0, 0, 0.75), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+
+  --accent-primary: #10b981;
+  --accent-primary-hover: #34d399;
+  --accent-light: rgba(16, 185, 129, 0.15);
+  --accent-border: rgba(16, 185, 129, 0.3);
+  --accent-text: #34d399;
+
+  --grid-line-color: rgba(255, 255, 255, 0.03);
+}
+
+/* Accent Palette Themes */
+body.theme-cyan, html.dark body.theme-cyan {
+  --accent-primary: #06b6d4;
+  --accent-primary-hover: #0891b2;
+  --accent-light: rgba(6, 182, 212, 0.15);
+  --accent-border: rgba(6, 182, 212, 0.3);
+  --accent-text: #06b6d4;
+}
+
+body.theme-amber, html.dark body.theme-amber {
+  --accent-primary: #f59e0b;
+  --accent-primary-hover: #d97706;
+  --accent-light: rgba(245, 158, 11, 0.15);
+  --accent-border: rgba(245, 158, 11, 0.3);
+  --accent-text: #f59e0b;
+}
+
+body.theme-purple, html.dark body.theme-purple {
+  --accent-primary: #8b5cf6;
+  --accent-primary-hover: #7c3aed;
+  --accent-light: rgba(139, 92, 246, 0.15);
+  --accent-border: rgba(139, 92, 246, 0.3);
+  --accent-text: #a78bfa;
+}
+
+body.theme-monochrome, html.dark body.theme-monochrome {
+  --accent-primary: #64748b;
+  --accent-primary-hover: #475569;
+  --accent-light: rgba(100, 116, 139, 0.15);
+  --accent-border: rgba(100, 116, 139, 0.3);
+  --accent-text: #94a3b8;
+}
+
+/* Global Typography & Background */
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  letter-spacing: -0.012em;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Classic Architectural Grid */
+.bg-enterprise-grid {
+  background-image: 
+    linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line-color) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+.bg-dots-pattern {
+  background-image: radial-gradient(var(--grid-line-color) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+/* Classic Glass Panel */
+.glass-panel {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-card);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel:hover {
+  border-color: var(--border-card-hover);
+}
+
+.glass-panel-elevated {
+  background-color: var(--bg-card-elevated);
+  border: 1px solid var(--border-card);
+  box-shadow: var(--shadow-card-elevated);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+/* Subpanels inside cards */
+.subpanel-card {
+  background-color: var(--subpanel-bg);
+  border: 1px solid var(--subpanel-border);
+}
+
+/* Dynamic Text Colors */
+.text-themed-primary { color: var(--text-primary); }
+.text-themed-secondary { color: var(--text-secondary); }
+.text-themed-muted { color: var(--text-muted); }
+.text-themed-accent { color: var(--accent-text); }
+.bg-themed-accent-light { background-color: var(--accent-light); }
+.border-themed-accent { border-color: var(--accent-border); }
+
+/* Interface Density: Compact Mode */
+body.density-compact .glass-panel {
+  padding: 0.75rem !important;
+}
+body.density-compact .metric-number {
+  font-size: 1.75rem !important;
+}
+body.density-compact main {
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+}
+
+/* Radar & Holographic Scanner Animations */
+@keyframes radar-sweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.radar-sweep {
+  animation: radar-sweep 4s linear infinite;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.92); opacity: 0.8; }
+  50% { transform: scale(1.35); opacity: 0; }
+  100% { transform: scale(0.92); opacity: 0.8; }
+}
+
+.pulse-beacon::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: inherit;
+  border-radius: 9999px;
+  animation: pulse-ring 2.2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+}
+
+/* Power Flow Circuit Animations */
+@keyframes flow-circuit-right {
+  from { stroke-dashoffset: 40; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes flow-circuit-left {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: 40; }
+}
+
+.power-flow-anim-forward {
+  stroke-dasharray: 6, 6;
+  animation: flow-circuit-right 1.2s linear infinite;
+}
+
+.power-flow-anim-reverse {
+  stroke-dasharray: 6, 6;
+  animation: flow-circuit-left 1.2s linear infinite;
+}
+
+/* Floating Ambient Orbs */
+@keyframes orb-float-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(40px, -50px) scale(1.1); }
+  66% { transform: translate(-30px, 30px) scale(0.95); }
+}
+
+@keyframes orb-float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-50px, 40px) scale(1.15); }
+  66% { transform: translate(40px, -30px) scale(0.9); }
+}
+
+.glow-orb-primary { animation: orb-float-1 16s ease-in-out infinite; }
+.glow-orb-secondary { animation: orb-float-2 20s ease-in-out infinite; }
+
+/* Segmented Gauge Tube */
+.gauge-tube {
+  background: var(--subpanel-bg);
+  border: 1px solid var(--border-card);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Clean Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-app);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-subtle);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+}
